@@ -14,6 +14,10 @@
   user-select: none;
 }
 
+.card:hover {
+  transform: scale(1.1);
+}
+
 .card.blue {
   background: #0466D2;
   border: 3px solid #045CBD;
@@ -36,15 +40,15 @@
 }
 
 .card.selected1 {
-  transform: translate(0px, -30px) rotate(5deg);
+  transform: translate(0px, -30px) rotate(5deg) scale(1.1);
 }
 
 .card.selected2 {
-  transform: translate(0px, -31px) rotate(-4deg);
+  transform: translate(0px, -31px) rotate(-4deg) scale(1.1);
 }
 
 .card.selected3 {
-  transform: translate(0px, -28px) rotate(3deg);
+  transform: translate(0px, -28px) rotate(3deg) scale(1.1);
 }
 
 .label-small {
