@@ -1,0 +1,42 @@
+.card {
+  position: relative;
+  width: 90px;
+  height: 120px;
+  border-radius: 12px;
+  color: white;
+  font-size: 36px;
+  line-height: 110px;
+  font-weight: bold;
+  margin: 0 15px;
+  box-shadow: 2px 4px 20px 0 lightgray;
+  cursor: pointer;
+}
+
+.card.blue {
+  background: #0466D2;
+  border: 3px solid #045CBD;
+}
+
+.card.green {
+  background: #149C37;
+  border: 3px solid #2BA64B;
+}
+
+.card.yellow {
+  background: #FDC72F;
+  border: 3px solid #E4B32A;
+}
+
+.card.grey {
+  color: #A0A0A0;
+  background: #F7F7F7;
+  border: 3px solid #DEDEDE;
+}
+
+.label-small {
+  position: absolute;
+  font-size: 14px;
+  line-height: 28px;
+  top: 0;
+  left: 10px;
+}
