@@ -7,4 +7,6 @@ export interface ICard {
 
 export interface ICardProps {
     card: ICard;
+    isSelected: boolean;
+    cardSelected: (card: ICard) => any;
 }
