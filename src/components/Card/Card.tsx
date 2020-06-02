@@ -21,8 +21,6 @@ export const Card: React.FC<ICardProps> = (props: ICardProps) => {
         props.cardSelected(props.card);
     }
 
-
-
     return (
         <div className={`card ${props.card.color} ${props.isSelected && randomStyle}`}
              onClick={() => cardSelected()}>

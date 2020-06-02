@@ -6,3 +6,8 @@
     min-height: 300px;
     min-width: 500px;
 }
+
+.votes-list .votes {
+    display: flex;
+    justify-content: center;
+}

@@ -5,22 +5,36 @@ import './Cards.css'
 import {ICard} from "../Card/Card.interface";
 import { ApiService } from '../../api/api';
 
-export const Cards: React.FC<any> = (props) => {
+export class Cards extends React.Component<any, any> {
 
-    const [selected, setSelected] = useState()
-
-    const onCardSelected = (card: ICard) => {
-        setSelected(card.value)
-        ApiService.vote(card, props.selectedTask)
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            selected: ''
+        }
     }
 
-    return (
-        <div className={'cards-row'}>
-            {cards.map(card =>
+    public componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
+        // if ()
+    }
+
+    public render() {
+        return (
+          <div className={'cards-row'}>
+              {cards.map(card =>
                 <Card card={card} key={card.value}
-                      cardSelected={onCardSelected}
-                      isSelected={selected === card.value}/>)
-            }
-        </div>
-    )
+                      cardSelected={this.onCardSelected}
+                      isSelected={this.state.selected === card.value}/>)
+              }
+          </div>
+        )
+    }
+
+    private onCardSelected = (card: ICard) => {
+        if (this.props.selectedTask) {
+            this.setState({selected: card.value})
+            ApiService.vote(card, this.props.selectedTask)
+        }
+    }
+
 }
