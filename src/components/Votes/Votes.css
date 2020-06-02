@@ -1,0 +1,8 @@
+.votes-list {
+    position: absolute;
+    left: 35px;
+    top: 35px;
+    border: 1px solid;
+    min-height: 300px;
+    min-width: 500px;
+}

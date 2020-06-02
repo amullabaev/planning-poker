@@ -1,0 +1,19 @@
+.task-list .task-list-item {
+    cursor: pointer;
+    padding-top: 10px;
+}
+
+.task-list .selected {
+    background: rgba(0, 187, 38, 0.53);
+    width: 500px;
+    margin: 0 auto;
+}
+
+.task-list {
+    position: absolute;
+    right: 35px;
+    top: 35px;
+    border: 1px solid;
+    min-height: 300px;
+    min-width: 500px;
+}
