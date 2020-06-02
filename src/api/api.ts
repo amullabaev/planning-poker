@@ -10,12 +10,14 @@ export const API = {
   SEND_VOTE: { url: 'votes', method: 'post' },
   GET_VOTES: { url: 'votes', method: 'get' },
   GET_ALL_SCORES: { url: 'scores', method: 'get' },
+  CLEAR_TASKS: {url: 'clear-tasks', method: 'get'},
+  CLEAR_USERS: {url: 'clear-users', method: 'get'},
 }
 
 export class ApiService {
 
-  // private static baseUrl = 'http://localhost:8080/api/';
-  private static baseUrl = '/api/';
+  private static baseUrl = 'http://localhost/api/';
+  // private static baseUrl = '/api/';
 
   public static registerUser = () => {
     return ApiService.request(API.START_GAME)
@@ -39,6 +41,14 @@ export class ApiService {
 
   public static setTicketEstimation = (data: any) => {
     return ApiService.request(API.SET_VOTE_ON_TICKET, {data})
+  }
+
+  public static clearTasks = () => {
+    return ApiService.request(API.CLEAR_TASKS)
+  }
+
+  public static clearUsers = () => {
+    return ApiService.request(API.CLEAR_USERS)
   }
 
   public static getScores = () => {

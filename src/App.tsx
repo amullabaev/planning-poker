@@ -20,33 +20,53 @@ class App extends React.Component<any, any> {
   componentDidMount(): void {
     this.wsHandler()
     if (getNameFromCookies()) {
-      ApiService.registerUser()
+      return ApiService.registerUser().then(() => this.getScores())
     }
-    this.getScores()
+    return this.getScores()
   }
 
   public render() {
+    console.log(this.getSelectedTask());
     return (
       <div className="App">
         <StartGame/>
         <Tasks scores={this.state.scores} onSelect={this.taskSelected}/>
-        <Votes scores={this.state.scores}/>
-        <Cards selectedTask={this.state.selectedTask}/>
+        <Votes scores={this.state.scores} selectedTask={this.getSelectedTask()}/>
+        <Cards selectedTask={this.getSelectedTask()}/>
+        <span style={{color: 'lightgray'}}>PRE ALPHA TEST MVP v.0.0.010100111001</span>
+        <br/>
+        <button onClick={this.clearUsers}>Clear users</button>
+        <button onClick={this.clearTasks}>Clear tasks</button>
       </div>
     );
   }
 
+  private getSelectedTask = () => {
+    const activeTask = Object.entries(this.state.scores.tasks).filter((i: any) => i[1].active)[0]
+    return activeTask ? activeTask[0] : undefined
+  }
+
+  private clearUsers = () => {
+    ApiService.clearUsers()
+  }
+
+  private clearTasks = () => {
+    ApiService.clearTasks()
+  }
+
   private wsHandler = () => {
-    // const ws = new WebSocket('ws://localhost:8081')
-    const ws = new WebSocket('wss://amirkhan.herokuapp.com:8081')
+    const ws = new WebSocket('ws://localhost/ws')
+    // const ws = new WebSocket('wss://amirkhan.herokuapp.com/ws')
     ws.onmessage = ({data}) => {
       console.log('[WS MESSAGE]', data);
+      if (data === 'clearUsers') {
+        document.cookie = 'pokerName='
+      }
       this.getScores()
     }
   }
 
   private taskSelected = (task: string) => {
-    this.setState({selectedTask: task})
     ApiService.setTicketActive(task)
       .then((data: any) => {
         this.setState({scores: data})
