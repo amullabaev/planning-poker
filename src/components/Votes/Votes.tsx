@@ -1,20 +1,12 @@
 import React from 'react';
 import './Votes.css'
 import { cards } from '../../config/cards';
-import { ICard } from '../Card/Card.interface';
 
 export class Votes extends React.Component<any, any> {
 
-  constructor(props: any) {
-    super(props);
-    this.state ={
-      showVotes: false
-    }
-  }
-
   componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
     if (this.props.selectedTask !== prevProps.selectedTask) {
-      this.setState({showVotes: false})
+      this.props.onShowHideVotes(false)
     }
   }
 
@@ -23,7 +15,7 @@ export class Votes extends React.Component<any, any> {
     const activeTask = this.props.selectedTask
     return <>
       <div className={ 'votes-list' }>
-        <button onClick={this.toggleVotes}>{this.state.showVotes ? 'Hide' : 'Show'} votes</button>
+        <button onClick={this.toggleVotes}>{this.props.showVotes ? 'Hide' : 'Show'} votes</button>
 
         { users.map((user: any) =>
           <div className={'votes'} key={ user } >
@@ -39,13 +31,13 @@ export class Votes extends React.Component<any, any> {
   }
 
   private toggleVotes = () => {
-    this.setState({showVotes: !this.state.showVotes})
+    this.props.onShowHideVotes(!this.props.showVotes)
   }
 
   private getTotalScore = () => {
     let totalScore
 
-    if (this.props.scores.tasks && this.props.selectedTask) {
+    if (this.props.scores.tasks && this.props.selectedTask && this.props.showVotes) {
       const values = Object.entries(this.props.scores.tasks[this.props.selectedTask])
         .filter((i: any) => i[0] !== 'active' && Number.isInteger(i[1]))
         .flatMap(i => i[1])
@@ -57,11 +49,11 @@ export class Votes extends React.Component<any, any> {
       totalScore = cardValues.find(i => i >= score)
     }
 
-    return this.state.showVotes && totalScore ? totalScore : 'n/a'
+    return totalScore ? totalScore : 'n/a'
   }
 
   private getValue = (user: any) => {
-    if (this.state.showVotes) {
+    if (this.props.showVotes) {
       return this.props.scores.tasks[this.props.selectedTask][user]
     }
     return !!this.props.scores.tasks[this.props.selectedTask][user] ? 'voted' : 'waiting'

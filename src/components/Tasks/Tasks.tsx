@@ -9,7 +9,7 @@ export class Tasks extends Component<any, any> {
     this.state = {
       newTaskName: '',
       // taskList: [],
-      selectedTask: ''
+      // selectedTask: ''
     }
   }
 
@@ -21,7 +21,8 @@ export class Tasks extends Component<any, any> {
     const tasks = Object.keys(this.props.scores.tasks)
     return <div className={'task-list'}>
       <input type="text" placeholder={'input a task'} value={this.state.newTaskName} onChange={this.changeTaskName}/>
-      <button onClick={this.addTask}>add</button>
+      <button onClick={this.addTask}>Add</button>
+      <div style={{height: '20px'}}>{!this.props.selectedTask && 'Please select a task by clicking on it'}</div>
       {tasks.map((task: string) =>
         <div className={'task-list-item'} key={task}>
           <div className={this.props.scores.tasks[task].active ? 'selected' : ''}
@@ -34,7 +35,7 @@ export class Tasks extends Component<any, any> {
   }
 
   private selectTask = (task: string) => {
-    this.setState({selectedTask: task})
+    // this.setState({selectedTask: task})
     this.props.onSelect(task)
   }
 

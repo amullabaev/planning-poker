@@ -13,7 +13,8 @@ class App extends React.Component<any, any> {
     super(props);
     this.state = {
       selectedTask: '',
-      scores: {users: {}, tasks: {}}
+      scores: {users: {}, tasks: {}},
+      showVotes: false
     }
   }
 
@@ -26,12 +27,11 @@ class App extends React.Component<any, any> {
   }
 
   public render() {
-    console.log(this.getSelectedTask());
     return (
       <div className="App">
         <StartGame/>
-        <Tasks scores={this.state.scores} onSelect={this.taskSelected}/>
-        <Votes scores={this.state.scores} selectedTask={this.getSelectedTask()}/>
+        <Tasks scores={this.state.scores} selectedTask={this.getSelectedTask()} onSelect={this.taskSelected}/>
+        <Votes scores={this.state.scores} selectedTask={this.getSelectedTask()} showVotes={this.state.showVotes} onShowHideVotes={this.onShowHideVotes}/>
         <Cards selectedTask={this.getSelectedTask()}/>
         <span style={{color: 'lightgray'}}>PRE ALPHA TEST MVP v.0.0.010100111001</span>
         <br/>
@@ -39,6 +39,14 @@ class App extends React.Component<any, any> {
         <button onClick={this.clearTasks}>Clear tasks</button>
       </div>
     );
+  }
+
+  private onShowHideVotes = (show: boolean) => {
+    if (show) {
+      ApiService.showVotes()
+    } else {
+      ApiService.hideVotes()
+    }
   }
 
   private getSelectedTask = () => {
@@ -61,6 +69,10 @@ class App extends React.Component<any, any> {
       console.log('[WS MESSAGE]', data);
       if (data === 'clearUsers') {
         document.cookie = 'pokerName='
+      } else if (data === 'showVotes') {
+        this.setState({showVotes: true})
+      } else if (data === 'hideVotes') {
+        this.setState({showVotes: false})
       }
       this.getScores()
     }

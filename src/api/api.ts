@@ -12,6 +12,8 @@ export const API = {
   GET_ALL_SCORES: { url: 'scores', method: 'get' },
   CLEAR_TASKS: {url: 'clear-tasks', method: 'get'},
   CLEAR_USERS: {url: 'clear-users', method: 'get'},
+  SHOW_VOTES: {url: 'show-votes', method: 'get'},
+  HIDE_VOTES: {url: 'hide-votes', method: 'get'}
 }
 
 export class ApiService {
@@ -53,6 +55,14 @@ export class ApiService {
 
   public static getScores = () => {
     return ApiService.request(API.GET_ALL_SCORES)
+  }
+
+  public static showVotes = () => {
+    return ApiService.request(API.SHOW_VOTES)
+  }
+
+  public static hideVotes = () => {
+    return ApiService.request(API.HIDE_VOTES)
   }
 
   private static request = (api: any, body: any = '') => {
