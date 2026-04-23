@@ -9,9 +9,6 @@ export const cards: ICard[] = [
     {value: 8, color: 'blue'},
     {value: 13, color: 'green'},
     {value: 21, color: 'green'},
-    {value: 34, color: 'green'},
-    {value: 55, color: 'green'},
-    {value: 89, color: 'green'},
     {value: '?', color: 'yellow'},
     {value: 'Pass', color: 'grey'},
 ];

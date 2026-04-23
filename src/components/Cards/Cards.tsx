@@ -1,36 +1,25 @@
-import React from 'react';
+import { useState } from 'react';
 import { ApiService } from '../../api/api';
 import { cards } from '../../config/cards';
 import { Card } from '../Card/Card';
-import { type ICard } from "../Card/Card.interface";
+import { type ICard } from '../Card/Card.interface';
 import './Cards.css';
 
-export class Cards extends React.Component<any, any> {
+export function Cards({ selectedTask }: { selectedTask: string }) {
+  const [selected, setSelected] = useState<string>();
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            selected: ''
-        }
+  function onCardSelected(card: ICard) {
+    if (selectedTask) {
+      setSelected(card.value.toString());
+      ApiService.vote(card, selectedTask);
     }
+  }
 
-    public render() {
-        return (
-          <div className={'cards-row'}>
-              {cards.map(card =>
-                <Card card={card} key={card.value}
-                      cardSelected={this.onCardSelected}
-                      isSelected={this.state.selected === card.value}/>)
-              }
-          </div>
-        )
-    }
-
-    private onCardSelected = (card: ICard) => {
-        if (this.props.selectedTask) {
-            this.setState({selected: card.value})
-            ApiService.vote(card, this.props.selectedTask)
-        }
-    }
-
+  return (
+    <div className={'cards-row'}>
+      {cards.map((card) => (
+        <Card card={card} key={card.value} cardSelected={onCardSelected} isSelected={selected === card.value} />
+      ))}
+    </div>
+  );
 }

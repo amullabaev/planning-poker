@@ -10,53 +10,52 @@
   margin: 0 15px;
   box-shadow: 2px 4px 20px 0 lightgray;
   cursor: pointer;
-  transition: transform .5s ease;
+  transition: transform 0.5s ease;
   user-select: none;
-}
 
-.card:hover {
-  transform: scale(1.1);
-}
+  &:hover {
+    transform: scale(1.1);
+  }
+  .blue {
+    background: #0466d2;
+    border: 3px solid #045cbd;
+  }
 
-.card.blue {
-  background: #0466D2;
-  border: 3px solid #045CBD;
-}
+  .green {
+    background: #149c37;
+    border: 3px solid #2ba64b;
+  }
 
-.card.green {
-  background: #149C37;
-  border: 3px solid #2BA64B;
-}
+  .yellow {
+    background: #fdc72f;
+    border: 3px solid #e4b32a;
+  }
 
-.card.yellow {
-  background: #FDC72F;
-  border: 3px solid #E4B32A;
-}
+  .grey {
+    color: #a0a0a0;
+    background: #f7f7f7;
+    border: 3px solid #dedede;
+  }
 
-.card.grey {
-  color: #A0A0A0;
-  background: #F7F7F7;
-  border: 3px solid #DEDEDE;
-}
+  .selected1 {
+    transform: translate(0px, -30px) rotate(6deg) scale(1.1);
+  }
 
-.card.selected1 {
-  transform: translate(0px, -30px) rotate(6deg) scale(1.1);
-}
+  .selected2 {
+    transform: translate(0px, -31px) rotate(-4deg) scale(1.1);
+  }
 
-.card.selected2 {
-  transform: translate(0px, -31px) rotate(-4deg) scale(1.1);
-}
+  .selected3 {
+    transform: translate(0px, -35px) rotate(3deg) scale(1.1);
+  }
 
-.card.selected3 {
-  transform: translate(0px, -35px) rotate(3deg) scale(1.1);
-}
+  .selected4 {
+    transform: translate(0px, -40px) rotate(-8deg) scale(1.1);
+  }
 
-.card.selected4 {
-  transform: translate(0px, -40px) rotate(-8deg) scale(1.1);
-}
-
-.card.selected5 {
-  transform: translate(0px, -38px) rotate(8deg) scale(1.1);
+  .selected5 {
+    transform: translate(0px, -38px) rotate(8deg) scale(1.1);
+  }
 }
 
 .label-small {
