@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { ApiService } from '../../api/api';
-import './Tasks.css'
+import './Tasks.css';
 
 export class Tasks extends Component<any, any> {
 
@@ -38,7 +38,7 @@ export class Tasks extends Component<any, any> {
 
   private addTask = () => {
     ApiService.addTicket(this.state.newTaskName)
-      .then((data: any) => {
+      .then(() => {
         this.setState({ newTaskName: '' })
       })
   }

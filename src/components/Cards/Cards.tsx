@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {cards} from '../../config/cards';
-import {Card} from '../Card/Card';
-import './Cards.css'
-import {type ICard} from "../Card/Card.interface";
+import React from 'react';
 import { ApiService } from '../../api/api';
+import { cards } from '../../config/cards';
+import { Card } from '../Card/Card';
+import { type ICard } from "../Card/Card.interface";
+import './Cards.css';
 
 export class Cards extends React.Component<any, any> {
 
@@ -12,10 +12,6 @@ export class Cards extends React.Component<any, any> {
         this.state = {
             selected: ''
         }
-    }
-
-    public componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
-        // if ()
     }
 
     public render() {

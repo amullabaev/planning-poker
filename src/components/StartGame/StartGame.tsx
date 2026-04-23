@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import './StartGame.css';
-import { getNameFromCookies } from '../../utils/utils';
+import { Component } from 'react';
 import { ApiService } from '../../api/api';
+import { getNameFromCookies } from '../../utils/utils';
+import './StartGame.css';
 
 export class StartGame extends Component<any, any> {
 

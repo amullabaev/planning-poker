@@ -4,7 +4,7 @@ import { cards } from '../../config/cards';
 
 export class Votes extends React.Component<any, any> {
 
-  componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>, snapshot?: any): void {
+  componentDidUpdate(prevProps: Readonly<any>): void {
     if (this.props.selectedTask !== prevProps.selectedTask) {
       this.props.onShowHideVotes(false)
     }

@@ -21,7 +21,7 @@ class App extends React.Component<any, any> {
   componentDidMount(): void {
     this.wsHandler()
     if (getNameFromCookies()) {
-      return ApiService.registerUser().then(() => this.getScores())
+      ApiService.registerUser().then(() => this.getScores())
     }
     return this.getScores()
   }
