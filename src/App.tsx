@@ -1,98 +1,82 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { Cards } from './components/Cards/Cards';
-import { StartGame } from "./components/StartGame/StartGame";
+import { StartGame } from './components/StartGame/StartGame';
 import { Tasks } from './components/Tasks/Tasks';
 import { getNameFromCookies } from './utils/utils';
 import { ApiService } from './api/api';
 import { Votes } from './components/Votes/Votes';
 
-class App extends React.Component<any, any> {
+export default function App() {
+  const [showVotes, setShowVotes] = React.useState<boolean>(false);
+  const [scores, setScores] = React.useState({ users: {}, tasks: {} });
 
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      selectedTask: '',
-      scores: {users: {}, tasks: {}},
-      showVotes: false
-    }
-  }
-
-  componentDidMount(): void {
-    this.wsHandler()
+  useEffect(() => {
+    wsHandler();
     if (getNameFromCookies()) {
-      ApiService.registerUser().then(() => this.getScores())
+      ApiService.registerUser().then(() => getScores());
     }
-    return this.getScores()
-  }
+    return getScores();
+  }, []);
 
-  public render() {
-    return (
-      <div className="App">
-        <StartGame/>
-        <Tasks scores={this.state.scores} selectedTask={this.getSelectedTask()} onSelect={this.taskSelected}/>
-        <Votes scores={this.state.scores} selectedTask={this.getSelectedTask()} showVotes={this.state.showVotes} onShowHideVotes={this.onShowHideVotes}/>
-        <Cards selectedTask={this.getSelectedTask()}/>
-        <span style={{color: 'lightgray'}}>PRE ALPHA TEST MVP v.0.0.010100111001</span>
-        <br/>
-        <button onClick={this.clearUsers}>Clear users</button>
-        <button onClick={this.clearTasks}>Clear tasks</button>
-      </div>
-    );
-  }
-
-  private onShowHideVotes = (show: boolean) => {
+  const onShowHideVotes = (show: boolean) => {
     if (show) {
-      ApiService.showVotes()
+      ApiService.showVotes();
     } else {
-      ApiService.hideVotes()
+      ApiService.hideVotes();
     }
-  }
+  };
 
-  private getSelectedTask = () => {
-    const activeTask = Object.entries(this.state.scores.tasks).filter((i: any) => i[1].active)[0]
-    return activeTask ? activeTask[0] : undefined
-  }
+  const getSelectedTask = () => {
+    const activeTask = Object.entries(scores.tasks).filter((i: any) => i[1].active)[0];
+    return activeTask[0] ?? '';
+  };
 
-  private clearUsers = () => {
-    ApiService.clearUsers()
-  }
+  const clearUsers = () => {
+    ApiService.clearUsers();
+  };
 
-  private clearTasks = () => {
-    ApiService.clearTasks()
-  }
+  const clearTasks = () => {
+    ApiService.clearTasks();
+  };
 
-  private wsHandler = () => {
-    // const ws = new WebSocket('ws://localhost/ws')
-    const ws = new WebSocket('wss://amirkhan.herokuapp.com/ws')
-    ws.onmessage = ({data}) => {
+  const wsHandler = () => {
+    const ws = new WebSocket('wss://amirkhan.herokuapp.com/ws');
+    ws.onmessage = ({ data }) => {
       console.log('[WS MESSAGE]', data);
       if (data === 'clearUsers') {
-        document.cookie = 'pokerName='
+        document.cookie = 'pokerName=';
       } else if (data === 'showVotes') {
-        this.setState({showVotes: true})
+        setShowVotes(true);
       } else if (data === 'hideVotes') {
-        this.setState({showVotes: false})
+        setShowVotes(false);
       }
-      this.getScores()
-    }
-  }
+      getScores();
+    };
+  };
 
-  private taskSelected = (task: string) => {
-    ApiService.setTicketActive(task)
-      .then((data: any) => {
-        this.setState({scores: data})
-      })
-  }
+  const taskSelected = (task: string) => {
+    ApiService.setTicketActive(task).then((data: any) => {
+      setScores(data);
+    });
+  };
 
+  const getScores = () => {
+    ApiService.getScores().then((data: any) => {
+      setScores(data);
+    });
+  };
 
-  private getScores = () => {
-    ApiService.getScores()
-      .then((data: any) => {
-        this.setState({scores: data})
-      })
-  }
-
+  return (
+    <div className="App">
+      <StartGame />
+      <Tasks scores={scores} selectedTask={getSelectedTask()} onSelect={taskSelected} />
+      <Votes scores={scores} selectedTask={getSelectedTask()} showVotes={showVotes} onShowHideVotes={onShowHideVotes} />
+      <Cards selectedTask={getSelectedTask()} />
+      <span style={{ color: 'lightgray' }}>PRE ALPHA TEST MVP v.0.0.010100111001</span>
+      <br />
+      <button onClick={clearUsers}>Clear users</button>
+      <button onClick={clearTasks}>Clear tasks</button>
+    </div>
+  );
 }
-
-export default App;
