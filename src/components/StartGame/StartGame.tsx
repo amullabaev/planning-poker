@@ -19,11 +19,11 @@ export class StartGame extends Component<any, any> {
 
   public render = () => {
     return !this.state.isReady ?
-      <div className={ 'start-page' }>
-        <div className={ 'start-form' }>
+      <div className={'start-page'}>
+        <div className={'start-form'}>
           <span>Input your name</span>
-          <input placeholder="Name" value={this.state.name} onChange={this.changeName}/>
-          <button onClick={ this.start }>Start the game!</button>
+          <input placeholder="Name" value={this.state.name} onChange={this.changeName} />
+          <button onClick={this.start}>Start the game!</button>
         </div>
       </div>
       : null
@@ -33,11 +33,11 @@ export class StartGame extends Component<any, any> {
     this.setState({ name: event.target.value })
   }
 
-  private start = () => {
+  private start = async () => {
     if (this.state.name.length) {
-      document.cookie = `pokerName=${ this.state.name }`
-      ApiService.registerUser()
-        .then(() => this.setState({isReady: true}))
+      document.cookie = `pokerName=${this.state.name}`
+      await ApiService.registerUser();
+      this.setState({ isReady: true })
     }
   }
 }

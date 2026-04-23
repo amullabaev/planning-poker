@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import './Card.css'
-import {ICardProps} from './Card.interface';
+import {type ICardProps} from './Card.interface';
 
 export const Card: React.FC<ICardProps> = (props: ICardProps) => {
 
-    const [randomStyle, setRandomStyle] = useState()
+    const [randomStyle, setRandomStyle] = useState<string>()
 
     const getRandomSelectedStyle = (): string => {
         const cssClassName = `selected${getRandomNumberFrom1to5()}`;

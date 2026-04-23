@@ -8,20 +8,14 @@ export class Tasks extends Component<any, any> {
     super(props);
     this.state = {
       newTaskName: '',
-      // taskList: [],
-      // selectedTask: ''
     }
-  }
-
-  componentDidMount(): void {
-    // this.getTaskList()
   }
 
   public render = () => {
     const tasks = Object.keys(this.props.scores.tasks)
     return <div className={'task-list'}>
       <input type="text" placeholder={'input a task'} value={this.state.newTaskName} onChange={this.changeTaskName}/>
-      <button onClick={this.addTask}>Add</button>
+      <button onClick={this.addTask} disabled={!this.state.newTaskName}>Add</button>
       <div style={{height: '20px'}}>{!this.props.selectedTask && 'Please select a task by clicking on it'}</div>
       {tasks.map((task: string) =>
         <div className={'task-list-item'} key={task}>
@@ -35,27 +29,17 @@ export class Tasks extends Component<any, any> {
   }
 
   private selectTask = (task: string) => {
-    // this.setState({selectedTask: task})
     this.props.onSelect(task)
   }
-
-  // private getTaskList = () => {
-  //   ApiService.getTickets()
-  //     .then((data: any) => {
-  //       this.setState({taskList: data})
-  //     })
-  // }
 
   private changeTaskName = (e: any) => {
     this.setState({newTaskName: e.target.value})
   }
 
   private addTask = () => {
-    if (this.state.newTaskName) {
-      ApiService.addTicket(this.state.newTaskName)
-        .then((data: any) => {
-          this.setState({newTaskName: ''})
-        })
-    }
+    ApiService.addTicket(this.state.newTaskName)
+      .then((data: any) => {
+        this.setState({ newTaskName: '' })
+      })
   }
 }

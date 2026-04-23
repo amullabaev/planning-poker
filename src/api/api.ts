@@ -1,4 +1,4 @@
-import { ICard } from '../components/Card/Card.interface';
+import { type ICard } from '../components/Card/Card.interface';
 
 export const API = {
   START_GAME: { url: 'start-game', method: 'get' },
@@ -18,8 +18,8 @@ export const API = {
 
 export class ApiService {
 
-  private static baseUrl = 'http://localhost/api/';
-  // private static baseUrl = '/api/';
+  // private static baseUrl = 'http://localhost/api/';
+  private static baseUrl = '/api/';
 
   public static registerUser = () => {
     return ApiService.request(API.START_GAME)

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {cards} from '../../config/cards';
 import {Card} from '../Card/Card';
 import './Cards.css'
-import {ICard} from "../Card/Card.interface";
+import {type ICard} from "../Card/Card.interface";
 import { ApiService } from '../../api/api';
 
 export class Cards extends React.Component<any, any> {

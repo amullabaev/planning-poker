@@ -63,8 +63,8 @@ class App extends React.Component<any, any> {
   }
 
   private wsHandler = () => {
-    const ws = new WebSocket('ws://localhost/ws')
-    // const ws = new WebSocket('wss://amirkhan.herokuapp.com/ws')
+    // const ws = new WebSocket('ws://localhost/ws')
+    const ws = new WebSocket('wss://amirkhan.herokuapp.com/ws')
     ws.onmessage = ({data}) => {
       console.log('[WS MESSAGE]', data);
       if (data === 'clearUsers') {

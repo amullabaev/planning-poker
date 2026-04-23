@@ -1,4 +1,4 @@
-import { ICard } from '../components/Card/Card.interface';
+import { type ICard } from '../components/Card/Card.interface';
 
 export const cards: ICard[] = [
     {value: 0, color: 'blue'},
