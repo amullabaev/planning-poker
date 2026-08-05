@@ -29,7 +29,7 @@ export default function App() {
 
   const getSelectedTask = () => {
     const activeTask = Object.entries(scores.tasks).filter((i: any) => i[1].active)[0];
-    return activeTask[0] ?? '';
+    return activeTask ? activeTask[0] : '';
   };
 
   const clearUsers = () => {

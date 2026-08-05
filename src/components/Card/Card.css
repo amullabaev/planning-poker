@@ -16,44 +16,44 @@
   &:hover {
     transform: scale(1.1);
   }
-  .blue {
+  &.blue {
     background: #0466d2;
     border: 3px solid #045cbd;
   }
 
-  .green {
+  &.green {
     background: #149c37;
     border: 3px solid #2ba64b;
   }
 
-  .yellow {
+  &.yellow {
     background: #fdc72f;
     border: 3px solid #e4b32a;
   }
 
-  .grey {
+  &.grey {
     color: #a0a0a0;
     background: #f7f7f7;
     border: 3px solid #dedede;
   }
 
-  .selected1 {
+  &.selected1 {
     transform: translate(0px, -30px) rotate(6deg) scale(1.1);
   }
 
-  .selected2 {
+  &.selected2 {
     transform: translate(0px, -31px) rotate(-4deg) scale(1.1);
   }
 
-  .selected3 {
+  &.selected3 {
     transform: translate(0px, -35px) rotate(3deg) scale(1.1);
   }
 
-  .selected4 {
+  &.selected4 {
     transform: translate(0px, -40px) rotate(-8deg) scale(1.1);
   }
 
-  .selected5 {
+  &.selected5 {
     transform: translate(0px, -38px) rotate(8deg) scale(1.1);
   }
 }

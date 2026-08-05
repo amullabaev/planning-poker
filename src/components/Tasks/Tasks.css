@@ -17,3 +17,7 @@
     min-height: 300px;
     min-width: 500px;
 }
+
+.no-selected-task {
+    height: 20px;
+}

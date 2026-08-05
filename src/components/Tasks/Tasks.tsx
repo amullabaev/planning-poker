@@ -1,45 +1,45 @@
-import { Component } from 'react';
-import { ApiService } from '../../api/api';
+import { useState, type ChangeEvent } from 'react';
 import './Tasks.css';
 
-export class Tasks extends Component<any, any> {
+interface TaskProps {
+  // TODO: make task: { id: string, title: string, ... }
+  onSelect(task: string): void;
+}
 
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      newTaskName: '',
-    }
-  }
+export function Tasks(props: TaskProps) {
+  const [newTaskName, setNewTaskName] = useState('');
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [selectedTask, setSelectedTask] = useState('');
 
-  public render = () => {
-    const tasks = Object.keys(this.props.scores.tasks)
-    return <div className={'task-list'}>
-      <input type="text" placeholder={'input a task'} value={this.state.newTaskName} onChange={this.changeTaskName}/>
-      <button onClick={this.addTask} disabled={!this.state.newTaskName}>Add</button>
-      <div style={{height: '20px'}}>{!this.props.selectedTask && 'Please select a task by clicking on it'}</div>
-      {tasks.map((task: string) =>
-        <div className={'task-list-item'} key={task}>
-          <div className={this.props.scores.tasks[task].active ? 'selected' : ''}
-               onClick={() => this.selectTask(task)}>{task}</div>
-          <div></div>
+  const selectTask = (task: string) => {
+    setSelectedTask(task);
+    props.onSelect(task);
+  };
+
+  const changeTaskName = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewTaskName(e.target.value);
+  };
+
+  const addTask = () => {
+    setTasks([...tasks, newTaskName]);
+    setNewTaskName('');
+    // TODO: save task
+  };
+
+  return (
+    <div className="task-list">
+      <input type="text" placeholder={'input a task'} value={newTaskName} onChange={changeTaskName} />
+      <button disabled={!newTaskName} onClick={addTask}>
+        Add
+      </button>
+      <div className="no-selected-task">{!selectedTask && 'Please select a task by clicking on it'}</div>
+      {tasks.map((task) => (
+        <div className="task-list-item" key={task}>
+          <div className={task === selectedTask ? 'selected' : ''} onClick={() => selectTask(task)}>
+            {task}
+          </div>
         </div>
-
-      )}
+      ))}
     </div>
-  }
-
-  private selectTask = (task: string) => {
-    this.props.onSelect(task)
-  }
-
-  private changeTaskName = (e: any) => {
-    this.setState({newTaskName: e.target.value})
-  }
-
-  private addTask = () => {
-    ApiService.addTicket(this.state.newTaskName)
-      .then(() => {
-        this.setState({ newTaskName: '' })
-      })
-  }
+  );
 }

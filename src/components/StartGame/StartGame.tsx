@@ -33,10 +33,10 @@ export class StartGame extends Component<any, any> {
     this.setState({ name: event.target.value })
   }
 
-  private start = async () => {
+  private start = () => {
     if (this.state.name.length) {
       document.cookie = `pokerName=${this.state.name}`
-      await ApiService.registerUser();
+      ApiService.registerUser();
       this.setState({ isReady: true })
     }
   }
