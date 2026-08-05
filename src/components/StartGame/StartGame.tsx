@@ -1,43 +1,33 @@
-import { Component } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { ApiService } from '../../api/api';
 import { getNameFromCookies } from '../../utils/utils';
 import './StartGame.css';
 
-export class StartGame extends Component<any, any> {
+export function StartGame() {
+  const [name, setName] = useState<string>(getNameFromCookies());
+  const [isReady, setIsReady] = useState<boolean>(!name);
 
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      name: getNameFromCookies(),
-      isReady: !!getNameFromCookies()
+  const changeName = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
+  const start = () => {
+    if (name.length) {
+      document.cookie = `pokerName=${name}`;
+      ApiService.registerUser();
+      setIsReady(true);
     }
-  }
+  };
 
-  public componentDidUpdate() {
-
-  }
-
-  public render = () => {
-    return !this.state.isReady ?
+  return (
+    !isReady && (
       <div className={'start-page'}>
         <div className={'start-form'}>
           <span>Input your name</span>
-          <input placeholder="Name" value={this.state.name} onChange={this.changeName} />
-          <button onClick={this.start}>Start the game!</button>
+          <input placeholder="Name" value={name} onChange={changeName} />
+          <button onClick={start}>Start the game!</button>
         </div>
       </div>
-      : null
-  }
-
-  private changeName = (event: any) => {
-    this.setState({ name: event.target.value })
-  }
-
-  private start = () => {
-    if (this.state.name.length) {
-      document.cookie = `pokerName=${this.state.name}`
-      ApiService.registerUser();
-      this.setState({ isReady: true })
-    }
-  }
+    )
+  );
 }
