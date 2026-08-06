@@ -70,7 +70,7 @@ export default function App() {
   return (
     <div className="App">
       <StartGame />
-      <Tasks scores={scores} selectedTask={getSelectedTask()} onSelect={taskSelected} />
+      <Tasks onSelect={taskSelected} />
       <Votes scores={scores} selectedTask={getSelectedTask()} showVotes={showVotes} onShowHideVotes={onShowHideVotes} />
       <Cards selectedTask={getSelectedTask()} />
       <span style={{ color: 'lightgray' }}>PRE ALPHA TEST MVP v.0.0.010100111001</span>
