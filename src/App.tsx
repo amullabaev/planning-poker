@@ -19,11 +19,11 @@ export default function App() {
     return getScores();
   }, []);
 
-  const onShowHideVotes = (show: boolean) => {
-    if (show) {
-      ApiService.showVotes();
-    } else {
+  const onShowHideVotes = () => {
+    if (showVotes) {
       ApiService.hideVotes();
+    } else {
+      ApiService.showVotes();
     }
   };
 

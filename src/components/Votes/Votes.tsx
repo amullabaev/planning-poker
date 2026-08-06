@@ -1,61 +1,61 @@
-import React from 'react';
-import './Votes.css'
-import { cards } from '../../config/cards';
+import './Votes.css';
+import { CARDS } from '../../config/cards';
 
-export class Votes extends React.Component<any, any> {
+interface VotesProps {
+  showVotes: boolean;
+  selectedTask: string;
+  scores: {
+    tasks: {
+      [taskname: string]: {
+        [username: string]: number;
+      };
+    };
+    users: {};
+  };
+  onShowHideVotes(): void;
+}
 
-  componentDidUpdate(prevProps: Readonly<any>): void {
-    if (this.props.selectedTask !== prevProps.selectedTask) {
-      this.props.onShowHideVotes(false)
-    }
-  }
+export function Votes(props: VotesProps) {
+  const getTotalScore = () => {
+    let totalScore;
 
-  public render() {
-    const users = Object.keys(this.props.scores.users)
-    const activeTask = this.props.selectedTask
-    return <>
-      <div className={ 'votes-list' }>
-        <button onClick={this.toggleVotes}>{this.props.showVotes ? 'Hide' : 'Show'} votes</button>
+    if (props.scores.tasks && props.selectedTask && props.showVotes) {
+      const values = Object.entries(props.scores.tasks[props.selectedTask])
+        .filter((tasks) => tasks[0] !== 'active' && Number.isInteger(tasks[1]))
+        .flatMap((i) => i[1]);
 
-        { users.map((user: any) =>
-          <div className={'votes'} key={ user } >
-            <div style={{width: '100px'}}>{ user }:</div>
-            <div style={{width: '100px'}}>{ activeTask && this.getValue(user) }</div>
-          </div>
+      const score = values.reduce((a, b) => a + b) / values.length;
 
-        ) }
-        <br/>
-        <span>Total: {this.getTotalScore()}</span>
-      </div>
-    </>
-  }
+      const cardValues = CARDS.map((card) => card.value)
+        .filter(Number.isInteger)
+        .sort((a, b) => +a - +b);
 
-  private toggleVotes = () => {
-    this.props.onShowHideVotes(!this.props.showVotes)
-  }
-
-  private getTotalScore = () => {
-    let totalScore
-
-    if (this.props.scores.tasks && this.props.selectedTask && this.props.showVotes) {
-      const values = Object.entries(this.props.scores.tasks[this.props.selectedTask])
-        .filter((i: any) => i[0] !== 'active' && Number.isInteger(i[1]))
-        .flatMap(i => i[1])
-      // @ts-ignore
-      const score = values.reduce((a, b) => a + b) / values.length
-      const cardValues = cards.map((card: any) => card.value)
-        .filter((i: any) => Number.isInteger(i))
-        .sort((a: number, b: number ) => +a - +b)
-      totalScore = cardValues.find(i => i >= score)
+      totalScore = (cardValues as number[]).find((i) => i >= score);
     }
 
-    return totalScore ? totalScore : 'n/a'
-  }
+    return totalScore ?? 'n/a';
+  };
 
-  private getValue = (user: any) => {
-    if (this.props.showVotes) {
-      return this.props.scores.tasks[this.props.selectedTask][user]
+  const getUserEstimation = (username: string) => {
+    if (props.showVotes) {
+      return props.scores.tasks[props.selectedTask][username];
     }
-    return !!this.props.scores.tasks[this.props.selectedTask][user] ? 'voted' : 'waiting'
-  }
+    return !!props.scores.tasks[props.selectedTask][username] ? 'voted' : 'waiting';
+  };
+
+  const usernames = Object.keys(props.scores.users);
+
+  return (
+    <div className="votes-list">
+      <button onClick={props.onShowHideVotes}>{props.showVotes ? 'Hide' : 'Show'} votes</button>
+      {usernames.map((name) => (
+        <div className="votes" key={name}>
+          <div>{name}:</div>
+          <div>{props.selectedTask && getUserEstimation(name)}</div>
+        </div>
+      ))}
+      <br />
+      <span>Total: {getTotalScore()}</span>
+    </div>
+  );
 }
