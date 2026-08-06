@@ -21,8 +21,8 @@ export function StartGame() {
 
   return (
     !isReady && (
-      <div className={'start-page'}>
-        <div className={'start-form'}>
+      <div className="start-page">
+        <div className="start-form">
           <span>Input your name</span>
           <input placeholder="Name" value={name} onChange={changeName} />
           <button onClick={start}>Start the game!</button>

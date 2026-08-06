@@ -22,7 +22,7 @@ export function Card(props: ICardProps) {
 
   return (
     <div className={`card ${props.card.color} ${props.isSelected && randomStyle}`} onClick={cardSelected}>
-      <span className={'label-small'}>{props.card.value}</span>
+      <span className="label-small">{props.card.value}</span>
       {props.card.value}
     </div>
   );
