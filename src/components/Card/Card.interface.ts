@@ -2,7 +2,7 @@ export type CardValue = number | '?' | 'Pass'
 
 export interface ICard {
     value: CardValue;
-    color: string;
+    color: 'blue' | 'green' | 'yellow' | 'grey';
 }
 
 export interface ICardProps {
