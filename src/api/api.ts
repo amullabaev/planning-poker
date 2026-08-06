@@ -10,10 +10,10 @@ export const API = {
   SEND_VOTE: { url: 'votes', method: 'post' },
   GET_VOTES: { url: 'votes', method: 'get' },
   GET_ALL_SCORES: { url: 'scores', method: 'get' },
-  CLEAR_TASKS: {url: 'clear-tasks', method: 'get'},
-  CLEAR_USERS: {url: 'clear-users', method: 'get'},
-  SHOW_VOTES: {url: 'show-votes', method: 'get'},
-  HIDE_VOTES: {url: 'hide-votes', method: 'get'}
+  CLEAR_TASKS: { url: 'clear-tasks', method: 'get' },
+  CLEAR_USERS: { url: 'clear-users', method: 'get' },
+  SHOW_VOTES: { url: 'show-votes', method: 'get' },
+  HIDE_VOTES: { url: 'hide-votes', method: 'get' }
 }
 
 export class ApiService {
@@ -26,15 +26,15 @@ export class ApiService {
   }
 
   public static vote = (card: ICard, task: string) => {
-    return ApiService.request(API.SEND_VOTE, {task: task, vote: card.value})
+    return ApiService.request(API.SEND_VOTE, { task: task, vote: card.value })
   }
 
   public static addTicket = (data: any) => {
-    return ApiService.request(API.ADD_NEW_TICKET, {ticket: data})
+    return ApiService.request(API.ADD_NEW_TICKET, { ticket: data })
   }
 
   public static setTicketActive = (ticket: string) => {
-    return ApiService.request(API.SET_TICKET_ACTIVE, {ticket: ticket})
+    return ApiService.request(API.SET_TICKET_ACTIVE, { ticket: ticket })
   }
 
   public static getTickets = () => {
@@ -42,7 +42,7 @@ export class ApiService {
   }
 
   public static setTicketEstimation = (data: any) => {
-    return ApiService.request(API.SET_VOTE_ON_TICKET, {data})
+    return ApiService.request(API.SET_VOTE_ON_TICKET, { data })
   }
 
   public static clearTasks = () => {
@@ -66,19 +66,25 @@ export class ApiService {
   }
 
   private static request = (api: any, body: any = '') => {
-    if (api.method === 'get') {
-      return ApiService.getRequest(api, body);
-    } else {
-      return ApiService.postRequest(api, body)
+    try {
+      if (api.method === 'get') {
+        return ApiService.getRequest(api, body);
+      } else {
+        return ApiService.postRequest(api, body)
+      }
+    } catch (e) {
+      console.error(e)
+      return Promise.resolve({})
     }
   }
 
   private static getRequest = (api: any, body: any) => {
     const url = ApiService.baseUrl + api.url;
-    // @ts-ignore
-    return fetch(url, {params: body, credentials: 'include', headers: {
+    return fetch(url, {
+      body, credentials: 'include', headers: {
         'Content-Type': 'application/json'
-      }})
+      }
+    })
       .then((res: Response) => res.json())
   }
 
@@ -88,10 +94,11 @@ export class ApiService {
       method: api.method,
       body: JSON.stringify(body)
     }
-    // @ts-ignore
-    return fetch(url, {...request, credentials: 'include', headers: {
+    return fetch(url, {
+      ...request, credentials: 'include', headers: {
         'Content-Type': 'application/json'
-      }})
+      }
+    })
       .then((res: Response) => res.json())
   }
 }
