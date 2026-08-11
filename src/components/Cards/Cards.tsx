@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ApiService } from '../../api/api';
 import { CARDS } from '../../config/cards';
 import { Card } from '../Card/Card';
 import { type ICard } from '../Card/Card.interface';
@@ -11,7 +10,6 @@ export function Cards({ selectedTask }: { selectedTask: string }) {
   function onCardSelected(card: ICard) {
     if (selectedTask) {
       setSelected(card.value.toString());
-      ApiService.vote(card, selectedTask);
     }
   }
 

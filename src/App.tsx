@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { ApiService } from './api/api';
 import './App.css';
 import { Cards } from './components/Cards/Cards';
 import { StartGame } from './components/StartGame/StartGame';
@@ -8,10 +7,10 @@ import { Votes } from './components/Votes/Votes';
 import { deleteTask, getAllTasks, saveTask } from './services/taskService';
 
 export default function App() {
-  const [showVotes, setShowVotes] = useState<boolean>(false);
-  const [scores, setScores] = useState({ users: {}, tasks: {} });
+  const [showVotes, _setShowVotes] = useState<boolean>(false);
+  const [scores, _setScores] = useState({ users: {}, tasks: {} });
   const [tasks, setTasks] = useState<ITask[]>([]);
-  const [session, setSession] = useState<string>(() => window.location.pathname.substring(1));
+  const [session, _setSession] = useState<string>(() => window.location.pathname.substring(1));
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -23,9 +22,9 @@ export default function App() {
 
   const onShowHideVotes = () => {
     if (showVotes) {
-      ApiService.hideVotes();
+      console.log('hide votes');
     } else {
-      ApiService.showVotes();
+      console.log('show votes');
     }
   };
 
