@@ -1,33 +1,27 @@
 import { useState, type ChangeEvent } from 'react';
-import { ApiService } from '../../api/api';
-import { getNameFromCookies } from '../../utils/utils';
 import './StartGame.css';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 
 export function StartGame() {
-  const [name, setName] = useState<string>(getNameFromCookies());
-  const [isReady, setIsReady] = useState<boolean>(!name);
+  const [sessionId, setSessionId] = useState<string>('');
 
-  const changeName = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const start = () => {
-    if (name.length) {
-      document.cookie = `pokerName=${name}`;
-      ApiService.registerUser();
-      setIsReady(true);
-    }
+  const setSession = (event: ChangeEvent<HTMLInputElement>) => {
+    setSessionId(event.target.value);
   };
 
   return (
-    !isReady && (
-      <div className="start-page">
-        <div className="start-form">
-          <span>Input your name</span>
-          <input placeholder="Name" value={name} onChange={changeName} />
-          <button onClick={start}>Start the game!</button>
+    <div className="start-page">
+      <div className="start-form">
+        <div>
+          <Input placeholder="Join session by ID" className="m-1" onChange={setSession}></Input>
+          <Button className="m-1" onClick={() => console.log(sessionId)} disabled={!sessionId}>
+            Go
+          </Button>
         </div>
+        <span>or</span>
+        <Button className="m-1">Create a new session</Button>
       </div>
-    )
+    </div>
   );
 }
