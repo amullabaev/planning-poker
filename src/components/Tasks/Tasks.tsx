@@ -1,18 +1,37 @@
+import { MoreHorizontalIcon, Pencil, Trash2Icon } from 'lucide-react';
 import { useState, type ChangeEvent } from 'react';
+import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
+import { Field, FieldContent, FieldLabel, FieldTitle } from '../ui/field';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import './Tasks.css';
+import { Input } from '../ui/input';
+
+export interface ITask {
+  id: number;
+  title: string;
+  estimation?: number;
+}
 
 interface TaskProps {
-  // TODO: make task: { id: string, title: string, ... }
-  onSelect(task: string): void;
+  tasks: ITask[];
+  onCreate(title: string): void;
+  onEdit(task: ITask): void;
+  onDelete(task: ITask): void;
+  onSelect(task: ITask): void;
 }
 
 export function Tasks(props: TaskProps) {
   const [newTaskName, setNewTaskName] = useState('');
-  const [tasks, setTasks] = useState<string[]>([]);
-  const [selectedTask, setSelectedTask] = useState('');
 
-  const selectTask = (task: string) => {
-    setSelectedTask(task);
+  const selectTask = (task: ITask) => {
     props.onSelect(task);
   };
 
@@ -21,25 +40,56 @@ export function Tasks(props: TaskProps) {
   };
 
   const addTask = () => {
-    setTasks([...tasks, newTaskName]);
+    props.onCreate(newTaskName);
     setNewTaskName('');
-    // TODO: save task
   };
 
   return (
     <div className="task-list">
-      <input type="text" placeholder={'input a task'} value={newTaskName} onChange={changeTaskName} />
-      <button disabled={!newTaskName} onClick={addTask}>
-        Add
-      </button>
-      <div className="no-selected-task">{!selectedTask && 'Please select a task by clicking on it'}</div>
-      {tasks.map((task) => (
-        <div className="task-list-item" key={task}>
-          <div className={task === selectedTask ? 'selected' : ''} onClick={() => selectTask(task)}>
-            {task}
-          </div>
-        </div>
-      ))}
+      <div className="flex">
+        <Input type="text" placeholder={'input a task'} value={newTaskName} onChange={changeTaskName} />
+        <Button disabled={!newTaskName} onClick={addTask}>
+          Add
+        </Button>
+      </div>
+
+      <RadioGroup className="gap-1">
+        {props.tasks.map((task, index) => (
+          <FieldLabel key={task.id} htmlFor={'option-' + index} onClick={() => selectTask(task)}>
+            <Field orientation="horizontal">
+              <RadioGroupItem value={task.title} id={'option-' + index} />
+              <FieldContent>
+                <FieldTitle>{task.title}</FieldTitle>
+              </FieldContent>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button variant="ghost" size="icon" aria-label="More Options">
+                      <MoreHorizontalIcon />
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent align="end" className="w-40">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={() => props.onEdit(task)}>
+                      <Pencil />
+                      Edit
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem variant="destructive" onClick={() => props.onDelete(task)}>
+                      <Trash2Icon />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </Field>
+          </FieldLabel>
+        ))}
+      </RadioGroup>
     </div>
   );
 }

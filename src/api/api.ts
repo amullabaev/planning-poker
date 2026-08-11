@@ -1,5 +1,7 @@
 import { type ICard } from '../components/Card/Card.interface';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_PATH;
+
 export const API = {
   START_GAME: { url: 'start-game', method: 'get' },
   ADD_NEW_TICKET: { url: 'tickets', method: 'post' },
@@ -18,8 +20,7 @@ export const API = {
 
 export class ApiService {
 
-  // private static baseUrl = 'http://localhost/api/';
-  private static baseUrl = '/api/';
+  public static baseUrl = API_BASE_URL;
 
   public static registerUser = () => {
     return ApiService.request(API.START_GAME)
@@ -68,7 +69,7 @@ export class ApiService {
   private static request = (api: any, body: any = '') => {
     try {
       if (api.method === 'get') {
-        return ApiService.getRequest(api, body);
+        return ApiService.getRequest(api);
       } else {
         return ApiService.postRequest(api, body)
       }
@@ -78,10 +79,11 @@ export class ApiService {
     }
   }
 
-  private static getRequest = (api: any, body: any) => {
+  private static getRequest = (api: any) => {
     const url = ApiService.baseUrl + api.url;
     return fetch(url, {
-      body, credentials: 'include', headers: {
+      credentials: 'include',
+      headers: {
         'Content-Type': 'application/json'
       }
     })
@@ -95,10 +97,60 @@ export class ApiService {
       body: JSON.stringify(body)
     }
     return fetch(url, {
-      ...request, credentials: 'include', headers: {
+      ...request,
+      credentials: 'include',
+      headers: {
         'Content-Type': 'application/json'
       }
     })
       .then((res: Response) => res.json())
   }
+}
+
+export function getRequest(url: string) {
+  url = API_BASE_URL + url;
+
+  return fetch(url, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((res: Response) => res.json())
+}
+
+export function postRequest(url: string, body: any) {
+  url = API_BASE_URL + url;
+
+  const request = {
+    method: 'POST',
+    body: JSON.stringify(body)
+  }
+
+  return fetch(url, {
+    ...request,
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((res: Response) => res.json())
+}
+
+export function deleteRequest(url: string, body: any) {
+  url = API_BASE_URL + url;
+
+  const request = {
+    method: 'DELETE',
+    body: JSON.stringify(body)
+  }
+
+  return fetch(url, {
+    ...request,
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then((res: Response) => res.json())
 }

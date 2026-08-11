@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ApiService } from './api/api';
 import './App.css';
 import { Cards } from './components/Cards/Cards';
 import { StartGame } from './components/StartGame/StartGame';
-import { Tasks } from './components/Tasks/Tasks';
-import { getNameFromCookies } from './utils/utils';
-import { ApiService } from './api/api';
+import { Tasks, type ITask } from './components/Tasks/Tasks';
 import { Votes } from './components/Votes/Votes';
+import { deleteTask, getAllTasks, saveTask } from './services/taskService';
 
 export default function App() {
-  const [showVotes, setShowVotes] = React.useState<boolean>(false);
-  const [scores, setScores] = React.useState({ users: {}, tasks: {} });
+  const [showVotes, setShowVotes] = useState<boolean>(false);
+  const [scores, setScores] = useState({ users: {}, tasks: {} });
+  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [session, setSession] = useState<string>(() => window.location.pathname.substring(1));
 
   useEffect(() => {
-    wsHandler();
-    if (getNameFromCookies()) {
-      ApiService.registerUser().then(() => getScores());
-    }
-    return getScores();
+    const loadTasks = async () => {
+      const tasks = await getAllTasks();
+      setTasks(tasks);
+    };
+    loadTasks();
   }, []);
 
   const onShowHideVotes = () => {
@@ -32,51 +34,36 @@ export default function App() {
     return activeTask ? activeTask[0] : '';
   };
 
-  const clearUsers = () => {
-    ApiService.clearUsers();
+  const onCreateTask = async (title: string) => {
+    const newTask = await saveTask(title);
+    setTasks([...tasks, newTask]);
   };
 
-  const clearTasks = () => {
-    ApiService.clearTasks();
+  const onTaskSelected = (task: ITask) => {
+    console.log(task.title + ' selected');
   };
 
-  const wsHandler = () => {
-    const ws = new WebSocket('wss://amirkhan.herokuapp.com/ws');
-    ws.onmessage = ({ data }) => {
-      console.log('[WS MESSAGE]', data);
-      if (data === 'clearUsers') {
-        document.cookie = 'pokerName=';
-      } else if (data === 'showVotes') {
-        setShowVotes(true);
-      } else if (data === 'hideVotes') {
-        setShowVotes(false);
-      }
-      getScores();
-    };
+  const onTaskEdit = (task: ITask) => {
+    console.log('on edit ', task.title);
   };
 
-  const taskSelected = (task: string) => {
-    ApiService.setTicketActive(task).then((data: any) => {
-      setScores(data);
-    });
-  };
-
-  const getScores = () => {
-    ApiService.getScores().then((data: any) => {
-      setScores(data);
-    });
+  const onTaskDelete = async (task: ITask) => {
+    await deleteTask(task.id);
+    setTasks(tasks.filter((t) => t.id !== task.id));
   };
 
   return (
     <div className="App">
-      <StartGame />
-      <Tasks onSelect={taskSelected} />
+      {!session && <StartGame />}
+      <Tasks
+        tasks={tasks}
+        onCreate={onCreateTask}
+        onSelect={onTaskSelected}
+        onEdit={onTaskEdit}
+        onDelete={onTaskDelete}
+      />
       <Votes scores={scores} selectedTask={getSelectedTask()} showVotes={showVotes} onShowHideVotes={onShowHideVotes} />
       <Cards selectedTask={getSelectedTask()} />
-      <span style={{ color: 'lightgray' }}>PRE ALPHA TEST MVP v.0.0.010100111001</span>
-      <br />
-      <button onClick={clearUsers}>Clear users</button>
-      <button onClick={clearTasks}>Clear tasks</button>
     </div>
   );
 }
