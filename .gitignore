@@ -2,11 +2,18 @@ npm-debug.log*
 .idea
 /.idea/inspectionProfiles/
 /.idea/
+/.vscode/
 
 /frontend/build
 /frontend/node_modules
 /frontend/coverage
 /frontend/.env
+
+/api/.venv
+/api/.env
+/**/__pycache__
+
+*.db
 
 # misc
 .DS_Store
