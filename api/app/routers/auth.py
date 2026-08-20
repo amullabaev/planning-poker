@@ -8,7 +8,7 @@ from app.models import User
 from app.schemas import UserCreate, UserLogin
 
 
-router = APIRouter(prefix='/api/auth')
+router = APIRouter(prefix='/auth')
 
 
 @router.post('/register')

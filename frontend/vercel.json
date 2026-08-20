@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://planning-poker-backend-six.vercel.app/:path*"
+      "destination": "https://planning-poker-backend-six.vercel.app/api/:path*"
     }
   ]
 }

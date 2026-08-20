@@ -8,7 +8,7 @@ from app.models import Task
 from app.schemas import TaskCreate, TaskDelete
 
 
-router = APIRouter(prefix='/api/tasks')
+router = APIRouter(prefix='/tasks')
 
 
 @router.get('')
